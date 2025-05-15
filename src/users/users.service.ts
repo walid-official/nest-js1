@@ -8,6 +8,7 @@ export class UsersService {
   private users: User[] = [];
   private idCounter = 1;
 
+
   create(createUserDto: CreateUserDto): User {
     const user = new User({
       id: this.idCounter++,
@@ -16,6 +17,7 @@ export class UsersService {
     this.users.push(user);
     return user;
   }
+
 
   findAll(): User[] {
     return this.users;
@@ -35,14 +37,15 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
-    const updatedUser = {
+    const updatedUser = new User({
       ...this.users[userIndex],
       ...updateUserDto,
-    };
-    
+    });
+
     this.users[userIndex] = updatedUser;
     return updatedUser;
   }
+
 
   remove(id: number): void {
     const userIndex = this.users.findIndex(user => user.id === id);

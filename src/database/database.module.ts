@@ -4,11 +4,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: `mongodb+srv://${configService.get('DB_USER')}:${configService.get('DB_PASSWORD')}@cluster0.pxdhv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
+        uri: configService.get<string>(
+          'MONGODB_URI',
+          'mongodb://localhost:27017/walid',
+        ),
       }),
     }),
   ],
